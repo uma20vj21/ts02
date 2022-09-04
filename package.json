@@ -1,0 +1,22 @@
+{
+  "name": "ts02",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uma20vj21/ts02.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uma20vj21/ts02/issues"
+  },
+  "homepage": "https://github.com/uma20vj21/ts02#readme",
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}
