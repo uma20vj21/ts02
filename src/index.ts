@@ -3,7 +3,6 @@ type BeseObject = {
   b: string;
   [key: string]: string;
 }
-
 class ObjectWrapper {
     private _obj: BeseObject;
   
@@ -51,6 +50,7 @@ class ObjectWrapper {
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
     findKeys(val: unknown): string[] {
+       //Object.keysメゾットとfilterメゾットを用いて、this._objの配列から値を取って、その値とfindkeysで指定した値が一緒かどうかを判別する
       const result = Object.keys(this._obj).filter((key) => {
         return this._obj[key] === val;
       });
