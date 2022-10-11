@@ -8,18 +8,17 @@ type SecondObject = {
   a: string;
   b: string;
   bb: string;
-  bbb:string;
+  bbb: string;
 };
 
 
-class ObjectWrapper<T extends BeseObject> {
-    private _obj: T;
-  
+class ObjectWrapper<T extends BeseObject, U extends SecondObject > {
+    // private _obj: T;
     /***
      * 引数のオブジェクトのコピーを this._objに設定
      */
       // Object.assignメゾットでthis_objをコピーする
-    constructor(_obj: T) {
+    constructor(private _obj: T) {
       this._obj = Object.assign({},_obj);
     }
   
@@ -64,10 +63,24 @@ class ObjectWrapper<T extends BeseObject> {
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
     //ここで指定したい関数は「Class初期化に使用したオブジェクトが持っている値の型」で定義したい
-    findKeys(val:T extends SecondObject): string[] {
-       //Object.keysメゾットとfilterメゾットを用いて、this._objの配列から値を取って、その値とfindkeysで指定した値が一緒かどうかを判別する
+    // ↓これを'OK'にしたい
+    //  const wrappedObj2 = new ObjectWrapper(obj2);
+    //  const keys = wrappedObj2.findKeys('02');
+    //  if (
+    //    wrappedObj2.findKeys('03').length === 0 &&
+    //    keys.includes('b') &&
+    //    keys.includes('bb') &&
+    //    keys.includes('bbb') &&
+    //    keys.length === 3
+    //  ) {
+    //    console.log('OK: findKeys(val)');
+    //  } else {
+    //    console.error('NG: findKeys(val)');
+    //  }
+    findKeys(val: U){
+      // Object.keysメゾットとfilterメゾットを用いて、this._objの配列から値を取って、その値とfindkeysで指定した値が一緒かどうかを判別する
       const result = Object.keys(this._obj).filter((key) => {
-        return this._obj = val;
+        return this._obj[key] = val;
       });
       return result;
     }
@@ -79,7 +92,7 @@ class ObjectWrapper<T extends BeseObject> {
    */
   const obj1 = { a: '01', b: '02' };
   const wrappedObj1 = new ObjectWrapper(obj1);
-  
+    ``
   if (wrappedObj1.obj.a === '01') {
     console.log('OK: get obj()');
   } else {
