@@ -64,13 +64,12 @@ class ObjectWrapper<T extends AllObject > {
     /**
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
-    findKeys(val: T[keyof T]): keyof T[]{
-      // Object.keysメゾットとfilterメゾットを用いて、this._objの配列から値を取って、その値とfindkeysで指定した値が一緒かどうかを判別する
-      console.log(this._obj);
+    findKeys(val: T[keyof T]): (keyof T)[]{
       if (this._obj.hasOwnProperty(val) === false){
         return [];
-      }
-      return;
+      } 
+      console.log(this._obj);
+      return this.obj.keys(val);
     }
   }
   
