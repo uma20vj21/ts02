@@ -42,7 +42,6 @@ class ObjectWrapper<T extends AllObject > {
     set(key: keyof T, val: T[keyof T]): boolean {
       if (this._obj[key] !== undefined){
         this._obj[key] = val;
-        console.log(this._obj);
         return this._obj.hasOwnProperty(key);
       }
       return this._obj.hasOwnProperty(key);
@@ -65,11 +64,11 @@ class ObjectWrapper<T extends AllObject > {
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
     findKeys(val: T[keyof T]): (keyof T)[]{
+      console.log(this._obj);
       if (this._obj.hasOwnProperty(val) === false){
         return [];
       } 
-      console.log(this._obj);
-      return this.obj.keys(val);
+      return Object.keys(val);
     }
   }
   

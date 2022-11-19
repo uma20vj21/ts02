@@ -25,7 +25,6 @@ class ObjectWrapper {
     set(key, val) {
         if (this._obj[key] !== undefined) {
             this._obj[key] = val;
-            console.log(this._obj);
             return this._obj.hasOwnProperty(key);
         }
         return this._obj.hasOwnProperty(key);
@@ -45,11 +44,11 @@ class ObjectWrapper {
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
     findKeys(val) {
+        console.log(this._obj);
         if (this._obj.hasOwnProperty(val) === false) {
             return [];
         }
-        console.log(this._obj);
-        return this.obj.keys(val);
+        return Object.keys(val);
     }
 }
 /**
