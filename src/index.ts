@@ -2,24 +2,35 @@ type BeseObject = {
   a: string;
   b: string;
   [key: string]: string;
-}
+};
+//findKeysのvalに新しく型を指定
+type SecondObject = {
+  a: string;
+  b: string;
+  bb: string;
+  bbb: string;
+  [key: string]: string;
+};
 
-class ObjectWrapper {
-    private _obj: BeseObject;
-  
+type AllObject = BeseObject | SecondObject;
+
+
+class ObjectWrapper<T extends AllObject > {
+    // private _obj: T;
     /***
      * 引数のオブジェクトのコピーを this._objに設定
      */
-    constructor(_obj: BeseObject) {
-      this._obj = _obj;
+      // Object.assignメゾットでthis_objをコピーする
+    constructor(private _obj: T) {
+      this._obj = Object.assign({},_obj);
     }
   
     /**
      * this._objのコピーを返却
      * @return Object
      */
-    get obj() {
-      return this._obj;
+    get obj(){
+      return {...this._obj};
     }
   
     /**
@@ -27,12 +38,13 @@ class ObjectWrapper {
      * @param key オブジェクトのキー
      * @param val オブジェクトの値
      */
-    set(key: string, val: string): boolean {
-      if (this._obj[key] !== undefined) {
+    // keyof T とすることで、オブジェクトのキーをユニオン型に変更できる
+    set(key: keyof T, val: T[keyof T]): boolean {
+      if (this._obj[key] !== undefined){
         this._obj[key] = val;
-        return true;
+        return this._obj.hasOwnProperty(key);
       }
-      return false;
+      return this._obj.hasOwnProperty(key);
     }
   
     /**
@@ -40,8 +52,9 @@ class ObjectWrapper {
      * 指定のキーが存在しない場合 undefinedを返却
      * @param key オブジェクトのキー
      */
-    get(key: string) {
-      if (key in this._obj === undefined) {
+    get(key:keyof T) {
+    
+      if (this._obj [key] === undefined) {
         return undefined;
       }
       return this._obj[key];
@@ -50,21 +63,22 @@ class ObjectWrapper {
     /**
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
-    findKeys(val: unknown): string[] {
-      const result = Object.keys(this._obj).filter((key) => {
-        return this._obj[key] === val;
-      });
-      return result;
+    findKeys(val: T[keyof T]): (keyof T)[]{
+      console.log(this._obj);
+      if (this._obj.hasOwnProperty(val) === false){
+        return [];
+      } 
+      return Object.keys(val);
     }
   }
   
   /**
    * check script
-   * 完成したら、以下のスクリプトがすべてOKになる。
+   * 完成したら、以下のスクリプトがすべてOKになる。 
    */
   const obj1 = { a: '01', b: '02' };
   const wrappedObj1 = new ObjectWrapper(obj1);
-  
+    ``
   if (wrappedObj1.obj.a === '01') {
     console.log('OK: get obj()');
   } else {
@@ -72,7 +86,8 @@ class ObjectWrapper {
   }
   
   if (
-    wrappedObj1.set('c', '03') === false &&
+    //key: keyof T　つまりobj1でクラス初期化されているためkeyof obj1となりobj1内のキー以外ではコンパイルエラーとなる
+    // wrappedObj1.set('c', '03') === false &&// set{key: "a"| "b",val: string}が返されている
     wrappedObj1.set('b', '04') === true &&
     wrappedObj1.obj.b === '04'
   ) {
@@ -81,7 +96,10 @@ class ObjectWrapper {
     console.error('NG: set(key, val)');
   }
   
-  if (wrappedObj1.get('b') === '04' && wrappedObj1.get('c') === undefined) {
+  if (wrappedObj1.get('b') === '04' 
+  // && wrappedObj1.get('c') 
+  // === undefined
+  ) {
     console.log('OK: get(key)');
   } else {
     console.error('NG: get(key)');
